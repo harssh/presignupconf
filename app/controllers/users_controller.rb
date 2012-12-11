@@ -55,9 +55,16 @@ def activate
   
  @user = User.find(params[:id])
   @user.toggle!(:approved)  # This will toggle user status to activate
-  UserMailer.activation_email(@user).deliver
-  flash[:success] = "User activated"
-  redirect_to users_url
+  if @user.approved?
+   UserMailer.activation_email(@user).deliver
+   flash[:success] = "User activated"
+  redirect_to users_url 
+  else
+ 
+  flash[:success] = "User deactivated"
+  redirect_to users_url  
+  end
+  
 end
  
 
