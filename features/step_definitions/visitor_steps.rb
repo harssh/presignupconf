@@ -25,7 +25,7 @@ end
 
 Then /^I should see a "(.*?)" link$/ do |arg1|
  # pending # express the regexp above with the code you wish you had
-#page.should have_selector(arg1)
+
 
 page.should have_content(arg1)
 

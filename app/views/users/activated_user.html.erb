@@ -1,0 +1,32 @@
+
+<% provide(:title, 'Activated users') %>
+<h1>Activated users</h1>
+
+<%= will_paginate %>
+
+<% @user = User.all %>
+<ul class="users">
+ 
+  <% @users.each do |user| %>
+  
+<li>
+	
+	
+	<% if current_user.admin? && !current_user?(user)  %>
+	<% if user.approved != false %>
+	<%= gravatar_for user, size: 52 %>
+	<%= link_to user.name, user %>
+	
+	| <%= link_to "delete", user, method: :delete, data: { confirm: "You sure ?" } %>
+	| <%= link_to "activated", activate_user_path(user),  data: { confirm: "You sure ?" } %>
+	  
+	  <% end %>
+	   <% end %>	
+	
+	<% if current_user.admin? && !current_user?(user) %>
+	   
+	<% end %>
+</li>
+<% end %>
+</ul>
+<%= will_paginate %>

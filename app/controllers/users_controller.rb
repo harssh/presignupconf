@@ -2,12 +2,12 @@ class UsersController < ApplicationController
   before_filter :signed_in_user,
                 only: [:index, :edit, :update, :destroy]
   before_filter :correct_user, only: [:edit, :update]
-  before_filter :admin_user, only: [:destroy, :activate ] 
+  before_filter :admin_user, only: [:destroy, :activate , :activated_user] 
 
  respond_to :html, :js
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.paginate(page: params[:page], :per_page => 5,:order => 'approved asc')
   end
 
   def show
@@ -15,9 +15,14 @@ class UsersController < ApplicationController
    
   end
 
+
+
   def new
     @user = User.new
   end
+  
+  
+  
 
   def create
     @user = User.new(params[:user])
@@ -30,8 +35,17 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+  
+  
 
   def edit
+  end
+  
+  
+  
+  def activated_user
+    #@users = User.all
+     @users = User.paginate(page: params[:page], :per_page => 5, :order => 'approved desc')
   end
 
   def update
@@ -43,6 +57,8 @@ class UsersController < ApplicationController
       render 'edit'
     end
   end
+  
+  
 
   def destroy
     User.find(params[:id]).destroy
@@ -55,14 +71,16 @@ def activate
   
  @user = User.find(params[:id])
   @user.toggle!(:approved)  # This will toggle user status to activate
+  
   if @user.approved?
    UserMailer.activation_email(@user).deliver
    flash[:success] = "User activated"
   redirect_to users_url 
+  
   else
  
-  flash[:success] = "User deactivated"
-  redirect_to users_url  
+  flash[:notice] = "User deactivated"
+  redirect_to activatedusers_path 
   end
   
 end

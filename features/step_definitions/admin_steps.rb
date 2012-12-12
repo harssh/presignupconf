@@ -10,7 +10,7 @@ end
 
 def create_admin
   create_visitor
-#  delete_user
+# delete_user
   @user = FactoryGirl.create(:user, name: @visitor[:name], email: @visitor[:email], password: @visitor[:password], password_confirmation: @visitor[:password_confirmation])
    @user.toggle!(:admin)
    @user.toggle!(:approved)
@@ -39,7 +39,6 @@ end
 
 Then /^I should see a list of users$/ do
   #pending # express the regexp above with the code you wish you had
- 
-page.should have_content @user[:name]
-end
 
+page.should have_content('Users')
+end

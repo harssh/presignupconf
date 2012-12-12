@@ -3,7 +3,7 @@ SampleApp::Application.routes.draw do
 
    resources :users do
      member do
-       get :activate
+       get :activate,:activated_user
      end
    end
     
@@ -18,6 +18,7 @@ SampleApp::Application.routes.draw do
    
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
+  match '/activatedusers', to: 'users#activated_user'
    
  #  match '/sessions',  to: 'sessions#new'
  # match '/', to: 'static_pages#home'
